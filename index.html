@@ -15,13 +15,20 @@
       <button onclick="changeName('player1')">Change Name</button>
     </div>
      <label class="switch">
-      <input id="p2Checkbox" onchange="updatePlayer2()" type="checkbox">
+      <input id="p2Checkbox" onchange="updateGameMode()" type="checkbox">
       <span class="slider round"></span>
       <span class="labels" data-on="2 Player" data-off="1 Player"></span>
     </label>
     <div class="playerTwoWrapper">
       <h1 id="pTwoName">Computer</h1>
       <button onclick="changeName('player2')" id="p2NameBtn" class="hidden">Change Name</button>
+    </div>
+  </div>
+  <div class="countdownWrapper">
+    <button onclick="start()">
+      Start
+    </button>
+    <div id="countDown">
     </div>
   </div>
 </body>

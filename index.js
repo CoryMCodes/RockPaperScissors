@@ -21,6 +21,13 @@
     Player 1 = paper / player 2 = paper assign winner = draw
     player 1 = paper / player 2 = scissors assign winner = player 2 */
 
+  //Variables
+  let p1Name = "Player 1";
+  let p2Name = "Computer";
+  let playerCount = 1;
+
+  // changeName runs onclick from html and gets passed either player one or two depending on which
+  //html button is clicked.
   function changeName(player) {
     let playerName = prompt("Change Player Name:");
     if(player === "player1"){
@@ -31,13 +38,74 @@
     return;
   }
 
-  function updatePlayer2() {
+// function that determines if game is in 1 or 2 player mode 
+  function updateGameMode() {
     console.log(document.getElementById("p2Checkbox").checked)
     if(document.getElementById("p2Checkbox").checked){
+      // Show Player Two name and unhide the option to change name
       document.getElementById("pTwoName").innerText = "Player 2";
       document.getElementById("p2NameBtn").classList.remove("hidden");
+      // Update Player Count
+      playerCount = 2;
     }else{
+      // Set Player Name back to computer, hide change name button
       document.getElementById("pTwoName").innerText = "Computer";
       document.getElementById("p2NameBtn").classList.add("hidden");
+      // update player count to 1
+      playerCount = 1;
     }
   }
+
+// Computer Selects choice
+function getComputerChoice() {
+  var compChoiceNum = Math.floor(Math.random() * (3) + 1)  
+  switch (compChoiceNum) {
+    case 1 : return "rock";
+    case 2: return "paper";
+    case 3: return "scissors";
+    default: return "error"
+  }
+}
+
+function playRound(compChoice) {
+  var playerChoice = prompt("Type Rock, Paper, or Scissors").toLowerCase();
+  
+  // draw conditions
+  if(playerChoice === "rock" && compChoice === "rock"
+  || playerChoice === "paper" && compChoice === "paper"
+  || playerChoice === "scissors" && compChoice === "scissors"){
+    return "draw"
+    // Player1 win conditions
+  }else if(playerChoice === "rock" && compChoice === "scissors"
+  || playerChoice === "paper" && compChoice === "rock"
+  || playerChoice === "scissors" && compChoice === "paper"){
+    return "Player 1 Wins"
+    // Player2 win conditions
+  }else if(playerChoice === "rock" && compChoice === "paper"
+  || playerChoice === "paper" && compChoice === "scissors"
+  || playerChoice === "scissors" && compChoice === "rock"){
+    return "Player 2 Wins"
+  }else{
+    return "error"
+  }
+}
+
+//GameLoop
+function start(){
+  let countElem = document.getElementById("countDown")
+  let timerDisplay = 3
+  let id;
+  countElem.innerText = timerDisplay;
+  id = setInterval(() =>{
+    if(timerDisplay > 1){
+      timerDisplay--;
+      countElem.innerText = timerDisplay;
+    }else{
+      countElem.innerText = "Go!"
+      let result = playRound(getComputerChoice());
+      console.log(result)
+      clearInterval(id);
+    }
+  }, 1000)
+  
+}
