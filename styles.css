@@ -1,3 +1,50 @@
+/* fonts */
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Roboto+Mono&family=Rubik+Marker+Hatch&display=swap');
+
+.title{
+  font-family: 'Rubik Marker Hatch', cursive;
+  font-size: 4em;
+  text-align: center;
+}
+
+.switchWrapper{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.multiplayerOptionText{
+  font-size: .5em;
+}
+
+.displayBoxWrapper {
+  display: flex;
+  justify-content: space-around;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 2em;
+}
+
+.display {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  height: 350px;
+  align-items: center;
+}
+
+.choiceDisplayBox{
+  width: 100%;
+  height: 100%;
+  border: solid black 4px;
+}
+
+.buttonBox{
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 16px;;
+}
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -109,8 +156,3 @@ input:checked + .slider:before {
   display: none;
 }
 
-.playerWrapper{
-  display: flex;
-  justify-content: space-between;
-  margin: 16px 16px;
-}
