@@ -45,6 +45,21 @@
   width: 100%;
   margin-top: 16px;;
 }
+
+.roundTimeBar div {
+  width: 50%;
+  margin: auto;
+  height: 5px;
+  background: linear-gradient(to bottom, red, #900);
+  animation: roundtime calc(var(--duration) * 1s) linear forwards;
+  transform-origin: left center;
+}
+
+@keyframes roundtime {
+  to{
+    transform: scaleX(0);
+  }
+}
 /* The switch - the box around the slider */
 .switch {
   position: relative;

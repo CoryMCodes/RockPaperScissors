@@ -102,6 +102,7 @@ p2ButtonBox.classList.add('buttonBox');
 const versusBox = document.createElement('div');
 versusBox.innerText = 'VS';
 versusBox.style.alignSelf = 'center';
+
 // append elements to create displays
 p1Display.appendChild(p1NameWrapper);
 p1Display.appendChild(p1ChoiceBox);
@@ -113,6 +114,24 @@ displayBoxWrapper.appendChild(p1Display);
 displayBoxWrapper.appendChild(versusBox);
 displayBoxWrapper.appendChild(p2Display);
 container.appendChild(displayBoxWrapper);
+
+const roundTimer = document.createElement('div');
+roundTimer.style.cssText = '--duration: 10'
+const timerDiv = document.createElement('div');
+roundTimer.appendChild(timerDiv);
+// create start button
+const startButton = document.createElement("button");
+startButton.innerText = "START";
+
+container.appendChild(startButton);
+container.appendChild(roundTimer);
+
+startButton.addEventListener('click', () =>{
+  roundTimer.classList.add('roundTimeBar')
+  setTimeout(() =>{
+    roundTimer.classList.remove('roundTimeBar')
+  },10000)
+})
 
 choices.forEach(choice => {
   let p1Button = document.createElement("button");
