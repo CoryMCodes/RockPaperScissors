@@ -9,18 +9,14 @@
 
 .switchWrapper{
   display: flex;
+  font-family: Roboto Mono;
   align-items: center;
   gap: 6px;
-}
-
-.multiplayerOptionText{
-  font-size: .5em;
 }
 
 .displayBoxWrapper {
   display: flex;
   justify-content: space-around;
-  font-family: 'Roboto Mono', monospace;
   font-size: 2em;
 }
 
@@ -38,6 +34,19 @@
   border: solid black 4px;
 }
 
+.startButton{
+  width: 20%
+}
+.controls{
+  font-family: 'Roboto Mono', monospace;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 50%;
+  gap: 16px;
+  align-items: center;
+}
+
 .buttonBox{
   display: flex;
   justify-content: center;
@@ -46,9 +55,13 @@
   margin-top: 16px;;
 }
 
+.keyDisplay{
+  font-size: .5em;
+}
+
 .roundTimeBar div {
   width: 50%;
-  margin: auto;
+  margin: 16px auto;
   height: 5px;
   background: linear-gradient(to bottom, red, #900);
   animation: roundtime calc(var(--duration) * 1s) linear forwards;

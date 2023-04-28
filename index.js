@@ -24,7 +24,8 @@
 //Variables
 let p1Name = "Player 1";
 let p2Name = "Computer";
-let playerCount = 1;
+let player1Selection = '';
+let player2Selection = '';
 const choices = ["rock", "paper", "scissors"];
 
 //get page container
@@ -70,6 +71,9 @@ multiplayerSwitchSlider.classList.add('slider', 'round');
 multiplayerSwitchLabel.appendChild(multiplayerSwitchBox);
 multiplayerSwitchLabel.appendChild(multiplayerSwitchSlider);
 
+const multiplayerLabel = document.createElement('div');
+multiplayerLabel.innerText = "Multiplayer"
+
 switchWrapper.appendChild(onePlayerOption);
 switchWrapper.appendChild(multiplayerSwitchLabel);
 switchWrapper.appendChild(twoPlayerOption);
@@ -98,6 +102,33 @@ p2ChoiceBox.classList.add('choiceDisplayBox');
 const p2ButtonBox = document.createElement('div');
 p2ButtonBox.classList.add('buttonBox');
 
+const qKeyDisplay = document.createElement('div');
+qKeyDisplay.classList.add('keyDisplay');
+qKeyDisplay.innerText = "Q = Rock"
+const wKeyDisplay = document.createElement('div');
+wKeyDisplay.classList.add('keyDisplay');
+wKeyDisplay.innerText = "W = Paper"
+const eKeyDisplay = document.createElement('div');
+eKeyDisplay.classList.add('keyDisplay');
+eKeyDisplay.innerText = "E = Scissors"
+const iKeyDisplay = document.createElement('div');
+iKeyDisplay.classList.add('keyDisplay');
+iKeyDisplay.innerText = "I = Rock"
+const oKeyDisplay = document.createElement('div');
+oKeyDisplay.classList.add('keyDisplay')
+oKeyDisplay.innerText = "O = Paper";
+const pKeyDisplay = document.createElement('div');
+pKeyDisplay.classList.add('keyDisplay')
+pKeyDisplay.innerText = "P = Scissors";
+
+p1ButtonBox.appendChild(qKeyDisplay);
+p1ButtonBox.appendChild(wKeyDisplay);
+p1ButtonBox.appendChild(eKeyDisplay);
+
+p2ButtonBox.appendChild(iKeyDisplay);
+p2ButtonBox.appendChild(oKeyDisplay);
+p2ButtonBox.appendChild(pKeyDisplay);
+
 // VS div
 const versusBox = document.createElement('div');
 versusBox.innerText = 'VS';
@@ -115,43 +146,72 @@ displayBoxWrapper.appendChild(versusBox);
 displayBoxWrapper.appendChild(p2Display);
 container.appendChild(displayBoxWrapper);
 
+//create round timer 
 const roundTimer = document.createElement('div');
 roundTimer.style.cssText = '--duration: 10'
 const timerDiv = document.createElement('div');
 roundTimer.appendChild(timerDiv);
+
 // create start button
 const startButton = document.createElement("button");
+startButton.classList.add('startButton')
 startButton.innerText = "START";
 
-container.appendChild(startButton);
+//create controls container will contain: muptiplayer options/ start button /round timer
+const controlsContainer = document.createElement('div');
+controlsContainer.classList.add('controls');
+
+controlsContainer.appendChild(multiplayerLabel)
+controlsContainer.appendChild(switchWrapper)
+controlsContainer.appendChild(startButton);
+
+container.appendChild(controlsContainer)
 container.appendChild(roundTimer);
 
+
 startButton.addEventListener('click', () =>{
-  roundTimer.classList.add('roundTimeBar')
+  roundTimer.classList.add('roundTimeBar');
+  player1Selection = "";
+  player2Selection = "";
   setTimeout(() =>{
     roundTimer.classList.remove('roundTimeBar')
   },10000)
+
+  listenForPlayerChoice();
 })
 
-choices.forEach(choice => {
-  let p1Button = document.createElement("button");
-  p1Button.setAttribute('id', 'p1'+choice)
-  let p2Button = document.createElement("button");
-  p2Button.setAttribute('id', 'p2'+choice)
-  p1Button.innerText = choice;
-  p2Button.innerText = choice;
-  p1ButtonBox.appendChild(p1Button);
-  p2ButtonBox.appendChild(p2Button);
-})
+function keylog(event){
+  console.log("key: " + event.key)
+  switch (event.key){
+    case "q" : player1Selection = "rock"
+    break;
+    case "w" : player1Selection = "paper"
+    break;
+    case "e" : player1Selection = "scissors"
+    break;
+    case "i" : player2Selection = "rock"
+    break;
+    case "o" : player2Selection = "paper"
+    break;
+    case "p" : player2Selection = "scissors"
+    break;
+  }
+  console.log(player1Selection);
+  console.log(player2Selection);
+}
+function listenForPlayerChoice() {
+  document.addEventListener("keyup", keylog)
 
-
-  let choiceButtons = document.querySelectorAll("button.choice-btn"); 
-    // set event listeners
-    choiceButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      console.log("clicked");
-    })
-  })
+  
+  setTimeout(() => {
+    document.removeEventListener("keyup", keylog);
+    if (multiplayerSwitchBox.checked){
+      playRound(player1Selection, player2Selection)
+    }else{
+      playRound(player1Selection, getComputerChoice())
+    }  
+  }, 10000)
+}
   
   // changeName runs onclick from html and gets passed either player one or two depending on which
   //html button is clicked.
