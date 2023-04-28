@@ -11,4 +11,4 @@ Instructions:
 2. You have 5 seconds (indicated by countdown bar) to select an option using the assigned keys.
 3. Repeat until one player reaches a score of 5.  
 
-Note: Changing from single to multiplayer during a game, resets the score counter.
+Note: Changing from single to multiplayer during a game resets the score counter.
