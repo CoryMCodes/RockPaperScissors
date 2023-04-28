@@ -21,13 +21,17 @@
     Player 1 = paper / player 2 = paper assign winner = draw
     player 1 = paper / player 2 = scissors assign winner = player 2 */
 
-//Variables
+/* -- Variables -- */
 let p1Name = "Player 1";
 let p2Name = "Computer";
 let player1Selection = '';
 let player2Selection = '';
 const choices = ["rock", "paper", "scissors"];
+let p1Wins = 0;
+let p2Wins = 0;
 
+
+/* -- HTML ELEMENTS -- */
 //get page container
 const container = document.querySelector(".container");
 
@@ -102,23 +106,44 @@ p2ChoiceBox.classList.add('choiceDisplayBox');
 const p2ButtonBox = document.createElement('div');
 p2ButtonBox.classList.add('buttonBox');
 
+// build player score boxes
+const p1ScoreContainer = document.createElement('div');
+p1ScoreContainer.classList.add('scoreboard')
+const p1ScoreTitle = document.createElement('div');
+p1ScoreTitle.innerText = 'SCORE'
+const p1Score = document.createElement('div');
+p1Score.innerText = p1Wins.toString();
+p1ScoreContainer.appendChild(p1ScoreTitle);
+p1ScoreContainer.appendChild(p1Score);
+
+const p2ScoreContainer = document.createElement('div');
+p2ScoreContainer.classList.add('scoreboard')
+const p2ScoreTitle = document.createElement('div');
+p2ScoreTitle.innerText = 'SCORE'
+const p2Score = document.createElement('div');
+p2Score.innerText = p2Wins.toString();
+p2ScoreContainer.appendChild(p2ScoreTitle);
+p2ScoreContainer.appendChild(p2Score);
+
+// player key control assignment display
 const qKeyDisplay = document.createElement('div');
-qKeyDisplay.classList.add('keyDisplay');
+qKeyDisplay.classList.add('smallText');
 qKeyDisplay.innerText = "Q = Rock"
 const wKeyDisplay = document.createElement('div');
-wKeyDisplay.classList.add('keyDisplay');
+wKeyDisplay.classList.add('smallText');
 wKeyDisplay.innerText = "W = Paper"
 const eKeyDisplay = document.createElement('div');
-eKeyDisplay.classList.add('keyDisplay');
+eKeyDisplay.classList.add('smallText');
 eKeyDisplay.innerText = "E = Scissors"
 const iKeyDisplay = document.createElement('div');
-iKeyDisplay.classList.add('keyDisplay');
+// Player 2 Key assigment display
+iKeyDisplay.classList.add('smallText');
 iKeyDisplay.innerText = "I = Rock"
 const oKeyDisplay = document.createElement('div');
-oKeyDisplay.classList.add('keyDisplay')
+oKeyDisplay.classList.add('smallText')
 oKeyDisplay.innerText = "O = Paper";
 const pKeyDisplay = document.createElement('div');
-pKeyDisplay.classList.add('keyDisplay')
+pKeyDisplay.classList.add('smallText')
 pKeyDisplay.innerText = "P = Scissors";
 
 p1ButtonBox.appendChild(qKeyDisplay);
@@ -131,16 +156,25 @@ p2ButtonBox.appendChild(pKeyDisplay);
 
 // VS div
 const versusBox = document.createElement('div');
-versusBox.innerText = 'VS';
-versusBox.style.alignSelf = 'center';
+versusBox.classList.add('versusBox')
+const versus = document.createElement('div');
+versus.innerText = "VS"
+const roundResult = document.createElement('div');
+roundResult.classList.add("smallText")
+roundResult.innerText = "";
+versusBox.appendChild(versus);
+versusBox.appendChild(roundResult)
+
 
 // append elements to create displays
 p1Display.appendChild(p1NameWrapper);
 p1Display.appendChild(p1ChoiceBox);
 p1Display.appendChild(p1ButtonBox);
+p1Display.appendChild(p1ScoreContainer);
 p2Display.appendChild(p2NameWrapper);
 p2Display.appendChild(p2ChoiceBox);
 p2Display.appendChild(p2ButtonBox);
+p2Display.appendChild(p2ScoreContainer);
 displayBoxWrapper.appendChild(p1Display);
 displayBoxWrapper.appendChild(versusBox);
 displayBoxWrapper.appendChild(p2Display);
@@ -148,7 +182,7 @@ container.appendChild(displayBoxWrapper);
 
 //create round timer 
 const roundTimer = document.createElement('div');
-roundTimer.style.cssText = '--duration: 10'
+roundTimer.style.cssText = '--duration: 5'
 const timerDiv = document.createElement('div');
 roundTimer.appendChild(timerDiv);
 
@@ -168,20 +202,53 @@ controlsContainer.appendChild(startButton);
 container.appendChild(controlsContainer)
 container.appendChild(roundTimer);
 
+// Build Win Modal //
+const winModal = document.createElement('div')
+winModal.setAttribute('id', 'win-modal');
+winModal.classList.add("hidden");
+const modalTitle = document.createElement('div');
+modalTitle.classList.add('modalTitle');
+const modalResetBtn = document.createElement('button');
+modalResetBtn.setAttribute('id', 'reset');
+modalResetBtn.innerText = 'Reset';
 
+winModal.appendChild(modalTitle);
+winModal.appendChild(modalResetBtn);
+container.appendChild(winModal);
+
+/* --  EVENT LISTENERS -- */
+
+// event listner that on checkbox that toggles 1 or 2 player mode
+multiplayerSwitchBox.addEventListener('change', () =>{
+  updateGameMode();
+  resetRound();
+  resetGame();
+})
+
+// modal reset button resets game and rounds
+modalResetBtn.addEventListener('click', () =>{
+  resetGame();
+  resetRound();
+  toggleModal();
+})
+
+// event listener that starts round timer animation when start button is clicked
 startButton.addEventListener('click', () =>{
   roundTimer.classList.add('roundTimeBar');
-  player1Selection = "";
-  player2Selection = "";
+  resetRound();
   setTimeout(() =>{
     roundTimer.classList.remove('roundTimeBar')
-  },10000)
+  },5000)
 
   listenForPlayerChoice();
 })
 
+
+/* -- FUNCTIONS --*/
+
+// key log event handler that assigns player choices based on key pressed during
+// the ten second period after start is clicked
 function keylog(event){
-  console.log("key: " + event.key)
   switch (event.key){
     case "q" : player1Selection = "rock"
     break;
@@ -196,9 +263,9 @@ function keylog(event){
     case "p" : player2Selection = "scissors"
     break;
   }
-  console.log(player1Selection);
-  console.log(player2Selection);
 }
+// Listener that runs for ten seconds after start button is clicked
+// captures players key choice
 function listenForPlayerChoice() {
   document.addEventListener("keyup", keylog)
 
@@ -210,39 +277,22 @@ function listenForPlayerChoice() {
     }else{
       playRound(player1Selection, getComputerChoice())
     }  
-  }, 10000)
+  }, 5000)
 }
-  
-  // changeName runs onclick from html and gets passed either player one or two depending on which
-  //html button is clicked.
-  function changeName(player) {
-    let playerName = prompt("Change Player Name:");
-    if(player === "player1"){
-      document.getElementById("pOneName").innerText = playerName; 
-    }else{
-      document.getElementById("pTwoName").innerText = playerName;
-    }
-    return;
-  }
 
 // function that determines if game is in 1 or 2 player mode 
- /* function updateGameMode() {
-    console.log(document.getElementById("p2Checkbox").checked)
-    if(document.getElementById("p2Checkbox").checked){
+ function updateGameMode() {
+    console.log(multiplayerSwitchBox.checked)
+    if(multiplayerSwitchBox.checked){
       // Show Player Two name and unhide the option to change name
-      document.getElementById("pTwoName").innerText = "Player 2";
-      document.getElementById("p2NameBtn").classList.remove("hidden");
-      // Update Player Count
-      playerCount = 2;
+      p2Name = "Player 2";
+      document.getElementById('p2Name').innerText = p2Name;
     }else{
       // Set Player Name back to computer, hide change name button
-      document.getElementById("pTwoName").innerText = "Computer";
-      document.getElementById("p2NameBtn").classList.add("hidden");
-      // update player count to 1
-      playerCount = 1;
+      p2Name = "Computer";
+      document.getElementById('p2Name').innerText = p2Name;
     }
   }
-*/
 
 // Computer Selects choice
 function getComputerChoice() {
@@ -251,23 +301,59 @@ function getComputerChoice() {
   return choices[compChoiceNum]
 }
 
-function playRound(playerChoice, compChoice) {  
+// round plays using choices assigned by keylog function
+function playRound(playerChoice, player2Choice) {  
   // draw conditions
-  if(playerChoice === "rock" && compChoice === "rock"
-  || playerChoice === "paper" && compChoice === "paper"
-  || playerChoice === "scissors" && compChoice === "scissors"){
-    console.log("it was a draw")
+  if(playerChoice === "rock" && player2Choice === "rock"
+  || playerChoice === "paper" && player2Choice === "paper"
+  || playerChoice === "scissors" && player2Choice === "scissors"){
+    roundResult.innerText = "Draw"
     // Player1 win conditions
-  }else if(playerChoice === "rock" && compChoice === "scissors"
-  || playerChoice === "paper" && compChoice === "rock"
-  || playerChoice === "scissors" && compChoice === "paper"){
-     console.log("Player 1 Wins")
+  }else if(playerChoice === "rock" && player2Choice === "scissors"
+  || playerChoice === "paper" && player2Choice === "rock"
+  || playerChoice === "scissors" && player2Choice === "paper"){
+     roundResult.innerText = "Player 1 Wins"
+     p1Wins++
+     p1Score.innerText = p1Wins.toString();
+     if(p1Wins == 5){
+      modalTitle.innerText = "WINNER - PLAYER 1!"
+      toggleModal();
+    }
     // Player2 win conditions
-  }else if(playerChoice === "rock" && compChoice === "paper"
-  || playerChoice === "paper" && compChoice === "scissors"
-  || playerChoice === "scissors" && compChoice === "rock"){
-    console.log("Computer Wins")
+  }else if(playerChoice === "rock" && player2Choice === "paper"
+  || playerChoice === "paper" && player2Choice === "scissors"
+  || playerChoice === "scissors" && player2Choice === "rock"){
+    p2Wins++
+    p2Score.innerText = p2Wins.toString();
+    roundResult.innerText = "Player 2 Wins"
+    if(p2Wins == 5){
+      modalTitle.innerText = "WINNER - PLAYER 2!"
+      toggleModal();
+    }
   }else{
     return "error"
   }
+
+  p1ChoiceBox.innerText = playerChoice;
+  p2ChoiceBox.innerText = player2Choice;
+}
+
+function resetRound() {
+  player1Selection = "";
+  player2Selection = "";
+  p1ChoiceBox.innerText = "";
+  p2ChoiceBox.innerText = "";
+  roundResult.innerText = "";
+}
+
+function resetGame() {
+  resetRound();
+  p1Wins = 0;
+  p2Wins = 0;
+  p1Score.innerText = p1Wins;
+  p2Score.innerText = p2Wins;
+}
+
+function toggleModal() {
+  document.querySelector("#win-modal").classList.toggle("hidden")
 }

@@ -9,22 +9,25 @@
 
 .switchWrapper{
   display: flex;
-  font-family: Roboto Mono;
+  font-family: 'Roboto Mono', monospace;
   align-items: center;
   gap: 6px;
 }
 
 .displayBoxWrapper {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 48px;
   font-size: 2em;
+  font-family: 'Roboto Mono', monospace;
+
 }
 
 .display {
   display: flex;
   flex-direction: column;
   width: 30%;
-  height: 350px;
+  height: 450px;
   align-items: center;
 }
 
@@ -32,10 +35,29 @@
   width: 100%;
   height: 100%;
   border: solid black 4px;
+  text-align: center;
+  padding-top: 30%;
+}
+
+.versusBox{
+  display: flex;
+  flex-direction: column;
+  padding-top: 200px;
+  align-items: center;
+  min-width: 200px;
+  gap: 8px;
 }
 
 .startButton{
-  width: 20%
+  width: 20%;
+  background-color: white;
+  font-family: 'Roboto Mono', monospace;
+  border: solid black 2px;
+}
+
+.startButton:hover{
+  background-color: #cdcdcdd3;
+  cursor: pointer;
 }
 .controls{
   font-family: 'Roboto Mono', monospace;
@@ -55,7 +77,12 @@
   margin-top: 16px;;
 }
 
-.keyDisplay{
+.scoreboard{
+  margin-top: 8px;
+  font-size: .5em;
+  text-align: center;
+}
+.smallText{
   font-size: .5em;
 }
 
@@ -113,6 +140,42 @@
   transition: .4s;
 }
 
+#win-modal{
+  display: block;
+  position: fixed;
+  float: left;
+  left: calc(50% - 150px);
+  bottom: 50%;
+  background-color: #ffffff;
+  translate: (-50%,-50%);
+  width: 300px;
+  height: auto;
+  min-height: 100px;
+  text-align: center;
+  border: 4px solid #000000;
+  font-family: "Roboto Mono", monospace;
+}
+
+#reset{
+  font-family: "Roboto Mono", monospace;
+  background-color: white;
+  border: solid black 2px;
+  padding: 5px 25px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  font-size: 1em;
+}
+
+#reset:hover{
+  background-color: #cdcdcdd3;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+
 input + .slider {
   background-color: #2196F3;
 }
@@ -130,6 +193,14 @@ input:checked + .slider:before {
   -ms-transform: translateX(62px);
   transform: translateX(62px);
 }
+
+.modalTitle{
+  font-size: 1.5em;
+  min-height: 50px;
+  margin-top: 6px;
+  font-family: "Roboto Mono", monospace;
+}
+
 
 /* Rounded sliders */
 .slider.round {
@@ -179,8 +250,3 @@ input:checked + .slider:before {
 .switch input:checked~.labels::before {
   opacity: 1;
 }
-
-.hidden{
-  display: none;
-}
-
